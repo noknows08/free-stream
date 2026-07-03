@@ -147,9 +147,25 @@ function showNotFound() {
 
 /* ---------------------------- Watchlist ------------------------------ */
 
+let toastTimer = null;
+function toast(msg) {
+  let el = document.querySelector(".toast");
+  if (!el) {
+    el = document.createElement("div");
+    el.className = "toast";
+    el.setAttribute("role", "status");
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { el.classList.remove("show"); }, 3800);
+}
+
 async function toggleWatch(id) {
-  if (!supabaseEnabled) { openAuthModal(); return; }
-  if (!USER) { openAuthModal("signin"); return; }
+  // Signing in is optional — never force the modal; just hint gently.
+  if (!supabaseEnabled) { toast("Accounts are off in this demo — every film plays free without one."); return; }
+  if (!USER) { toast("Optional: tap “Sign in” (top right) to save films to your personal list."); return; }
   if (WATCH.has(id)) {
     WATCH.delete(id);
     refreshWatchBtn();
