@@ -498,6 +498,12 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 700; line-height: 1.15;
   padding: 20px;
   animation: fade 0.18s ease;
 }
+
+/* The hidden attribute must always win over display:grid —
+   without this the modal is stuck open and can never be closed. */
+.modal-backdrop[hidden] {
+  display: none;
+}
 .modal {
   position: relative;
   width: 100%;
