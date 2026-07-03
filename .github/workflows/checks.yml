@@ -1,0 +1,51 @@
+name: Deployment Checks
+
+# Free, GitHub-native equivalent of Vercel's Pro "Deployment Checks".
+# Runs on every push and pull request; validates the code before it can be
+# merged/promoted to production. Make it a required check via
+# GitHub → Settings → Branches → Branch protection rules for `main`.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Syntax-check all JavaScript (as ES modules)
+        run: |
+          echo '{"type":"module"}' > package.json
+          fail=0
+          for f in $(git ls-files '*.js'); do
+            echo "checking $f"
+            node --check "$f" || fail=1
+          done
+          rm -f package.json
+          exit $fail
+
+      - name: Ensure required files are present
+        run: |
+          missing=0
+          for f in index.html watch.html styles.css catalog.js config.js app.js watch.js tmdb.js supabase-client.js supabase/schema.sql vercel.json; do
+            if [ ! -f "$f" ]; then echo "MISSING: $f"; missing=1; fi
+          done
+          exit $missing
+
+      - name: Guard against accidental private keys
+        run: |
+          # The Supabase anon key and TMDB v3 key are public by design.
+          # Fail if a Supabase *service_role* key or a private secret ever leaks in.
+          if git grep -nE 'service_role|sb_secret_|SUPABASE_SERVICE' -- . ; then
+            echo "A private/secret key appears to be committed. Remove it."
+            exit 1
+          fi
+          echo "No private secrets found."

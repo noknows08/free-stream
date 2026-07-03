@@ -640,3 +640,197 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 700; line-height: 1.15;
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
+
+/* ===================================================================
+   Discovery layer (TMDB) — trailers, ratings, pills, detail modal.
+   Appended; reuses the existing dark-red theme tokens above.
+   =================================================================== */
+
+/* TMDB cards are <button>s (they open the detail modal, not a link). */
+button.card {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* Rating badge (⭐ + score) */
+.rating-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: #ffd24d;
+  white-space: nowrap;
+}
+.card-poster .rating-badge {
+  position: absolute;
+  z-index: 2;
+  left: 8px;
+  bottom: 8px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* "Trailer" / "Full Movie" pill labels on cards */
+.pill {
+  position: absolute;
+  z-index: 2;
+  top: 8px;
+  left: 8px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #fff;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+.pill-trailer { background: rgba(0, 0, 0, 0.62); border: 1px solid rgba(255, 255, 255, 0.28); }
+.pill-full { background: var(--accent); border: 1px solid rgba(255, 255, 255, 0.16); }
+
+/* Section subtitle + the "Free Full Movies" divider row */
+.section-subtitle {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: -6px 0 14px;
+  max-width: 720px;
+}
+.section-title-full {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.row-full {
+  border-top: 1px solid var(--border);
+  padding-top: 26px;
+  margin-top: 42px;
+}
+
+/* Search result groupings (Movies + Free Full Movies) */
+.results-section { margin-bottom: 26px; }
+
+/* Responsive 16:9 trailer embed */
+.trailer-embed {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  background: #000;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin: 4px 0 16px;
+}
+.trailer-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.trailer-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.18);
+  border-top-color: var(--accent-2);
+  animation: spin 0.8s linear infinite;
+}
+.trailer-status {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 18px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.86rem;
+  margin: 0;
+}
+.trailer-msg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+  text-align: center;
+  color: var(--muted);
+}
+.trailer-msg p { margin: 0; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Detail (trailer) modal — wider than the auth modal, backdrop header */
+.modal-detail {
+  max-width: 760px;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: calc(100vh - 40px);
+  text-align: left;
+}
+.modal-detail .modal-close {
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  z-index: 3;
+}
+.modal-detail .modal-close:hover { background: rgba(0, 0, 0, 0.72); color: #fff; }
+
+.detail-backdrop {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 6;
+  background-size: cover;
+  background-position: center;
+  background-color: #12121a;
+}
+.detail-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, var(--surface) 2%, rgba(21, 21, 29, 0) 62%);
+}
+.detail-body { padding: 6px 26px 26px; }
+.modal-detail .modal-title { font-size: 1.6rem; margin-top: 6px; }
+.detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin: 8px 0 16px;
+}
+.detail-meta .dot { color: var(--border); }
+.detail-overview { color: #dcdce4; margin: 0 0 14px; font-size: 1rem; }
+.detail-note {
+  color: var(--muted);
+  font-size: 0.85rem;
+  border-left: 2px solid var(--accent);
+  padding: 4px 0 4px 12px;
+  margin: 0 0 16px;
+}
+.detail-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+@media (max-width: 520px) {
+  .detail-body { padding-left: 16px; padding-right: 16px; }
+  .detail-backdrop { aspect-ratio: 16 / 9; }
+}
