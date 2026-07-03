@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Watch — FreeReel</title>
+  <meta name="description" content="Watch free classic public-domain and Creative Commons movies on FreeReel." />
+  <meta name="theme-color" content="#0b0b0f" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23e50914'/><path d='M12 9l12 7-12 7z' fill='%23ffffff'/></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a class="logo" href="index.html" aria-label="FreeReel home">&#9654;&nbsp;FreeReel</a>
+      <div class="nav-right">
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" stroke-linecap="round" />
+          </svg>
+          <label class="visually-hidden" for="search">Search movies</label>
+          <input id="search" type="search" placeholder="Search movies&hellip;" autocomplete="off" />
+        </div>
+        <div class="auth-area" id="auth-area"></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="not-found" id="not-found" hidden>
+      <h1>Movie not found</h1>
+      <p>We couldn&rsquo;t find that film. It may have been moved or the link is incorrect.</p>
+      <a class="btn btn-primary" href="index.html">&#9664; Back to browse</a>
+    </div>
+
+    <div id="watch-root">
+      <div class="watch">
+        <div class="player-wrap">
+          <video id="player" controls autoplay playsinline preload="metadata"></video>
+        </div>
+        <section class="watch-info" id="watch-info"></section>
+      </div>
+      <section class="more" id="more" hidden>
+        <h2 class="section-title">More Like This</h2>
+        <div class="track" id="more-track"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <span class="foot-logo">&#9654; FreeReel</span>
+      <p>FreeReel — 100% free, legal streaming. All films are in the public domain or Creative Commons licensed, served via the <a href="https://archive.org" target="_blank" rel="noopener">Internet Archive</a>.</p>
+      <p>A demo project built with vanilla HTML, CSS &amp; JavaScript. Not affiliated with any streaming service.</p>
+    </div>
+  </footer>
+
+  <!-- Auth modal (shared) -->
+  <div class="modal-backdrop" id="auth-modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+      <button class="modal-close" id="auth-close" type="button" aria-label="Close">&times;</button>
+      <h2 class="modal-title" id="auth-title">Sign in</h2>
+      <p class="modal-sub" id="auth-sub">Sign in to save films to your personal list.</p>
+      <form id="auth-form" novalidate>
+        <label class="field"><span>Email</span>
+          <input id="auth-email" type="email" required autocomplete="email" placeholder="you@example.com" />
+        </label>
+        <label class="field"><span>Password</span>
+          <input id="auth-password" type="password" required minlength="6" autocomplete="current-password" placeholder="At least 6 characters" />
+        </label>
+        <p class="auth-error" id="auth-error" hidden></p>
+        <button class="btn btn-primary btn-block" id="auth-submit" type="submit">Sign in</button>
+      </form>
+      <p class="modal-toggle">
+        <span id="auth-toggle-text">New here?</span>
+        <button type="button" class="linkbtn" id="auth-toggle">Create an account</button>
+      </p>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="catalog.js"></script>
+  <script type="module" src="watch.js"></script>
+</body>
+</html>
