@@ -286,8 +286,8 @@ function setAuthMode(mode) {
   const signup = authMode === "signup";
   $("auth-title").textContent = signup ? "Create account" : "Sign in";
   $("auth-sub").textContent = signup
-    ? "Create a free account to build your personal list."
-    : "Sign in to save films to your personal list.";
+    ? "Optional — create a free account only if you want a personal watchlist."
+    : "Optional — sign in only if you want a personal watchlist. Every film plays free either way.";
   $("auth-submit").textContent = signup ? "Create account" : "Sign in";
   $("auth-toggle-text").textContent = signup ? "Already have an account?" : "New here?";
   $("auth-toggle").textContent = signup ? "Sign in" : "Create an account";
@@ -325,6 +325,8 @@ function closeAuthModal() {
 
 function wireAuthModal() {
   $("auth-close").addEventListener("click", closeAuthModal);
+  var skip = $("auth-skip");
+  if (skip) skip.addEventListener("click", closeAuthModal);
   $("auth-modal").addEventListener("click", function (e) {
     if (e.target === e.currentTarget) closeAuthModal();
   });
